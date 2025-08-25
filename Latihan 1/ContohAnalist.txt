@@ -1,0 +1,56 @@
+Tema 1: Penjualan
+# Baca data
+data <- read.csv("data_customer.csv")
+
+# 1. Produk paling sering dibeli
+table(data$Produk_Terbeli)
+
+# 2. Rata-rata pengeluaran per produk
+aggregate(Pengeluaran ~ Produk_Terbeli, data=data, mean)
+
+# 3. Bandingkan pengeluaran berdasarkan kategori pendapatan
+data$Kategori_Pendapatan <- cut(data$Pendapatan,
+                                breaks=c(0,5000000,10000000,20000000),
+                                labels=c("Rendah","Menengah","Tinggi"))
+aggregate(Pengeluaran ~ Kategori_Pendapatan, data=data, mean)
+
+
+Tema 2: Reservasi
+# 4. Rata-rata umur per produk
+aggregate(Umur ~ Produk_Terbeli, data=data, mean)
+
+# 5. Distribusi produk berdasarkan jenis kelamin
+table(data$Jenis_Kelamin, data$Produk_Terbeli)
+
+# 6. Produk paling sering dibeli pendapatan menengah
+subset_data <- subset(data, Kategori_Pendapatan=="Menengah")
+table(subset_data$Produk_Terbeli)
+
+
+Tema 3: Kesehatan
+# 7. Cari pelanggan dengan pengeluaran > pendapatan
+subset(data, Pengeluaran > Pendapatan)
+
+# 8. Korelasi umur & pengeluaran
+cor(data$Umur, data$Pengeluaran)
+
+# 9. Segmentasi umur
+data$Segmen_Umur <- cut(data$Umur,
+                        breaks=c(17,30,45,60),
+                        labels=c("Muda","Dewasa","Senior"))
+table(data$Segmen_Umur, data$Produk_Terbeli)
+
+
+Visualisasi Tambahan
+# Histogram umur
+hist(data$Umur, main="Distribusi Umur Pelanggan", col="skyblue", xlab="Umur")
+
+# Boxplot pengeluaran per gender
+boxplot(Pengeluaran ~ Jenis_Kelamin, data=data,
+        main="Pengeluaran Berdasarkan Gender",
+        col=c("lightblue","pink"))
+
+# Barplot rata-rata pengeluaran per produk
+avg_pengeluaran <- aggregate(Pengeluaran ~ Produk_Terbeli, data=data, mean)
+barplot(avg_pengeluaran$Pengeluaran, names.arg=avg_pengeluaran$Produk_Terbeli,
+        main="Rata-rata Pengeluaran per Produk", col="orange")
