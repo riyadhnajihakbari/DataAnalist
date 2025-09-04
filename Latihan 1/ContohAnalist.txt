@@ -13,7 +13,7 @@ data$Kategori_Pendapatan <- cut(data$Pendapatan,
                                 breaks=c(0,5000000,10000000,20000000),
                                 labels=c("Rendah","Menengah","Tinggi"))
 aggregate(Pengeluaran ~ Kategori_Pendapatan, data=data, mean)
-
+        
 
 Tema 2: Reservasi
 # 4. Rata-rata umur per produk
